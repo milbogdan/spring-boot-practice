@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -16,6 +17,8 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
+
+    @JsonIgnore
     private String password;
 
     public User() {}
