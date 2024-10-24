@@ -38,7 +38,9 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.USER);
         userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
+        Map<String, Object> claims =  new HashMap<>();
+        claims.put("role",user.getRole());
+        var jwtToken = jwtService.generateToken(claims, user);
         return new AuthenticationResponse(jwtToken);
 
 
@@ -47,6 +49,8 @@ public class AuthService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-        return new AuthenticationResponse(jwtService.generateToken(user));
+        Map<String, Object> claims =  new HashMap<>();
+        claims.put("role",user.getRole());
+        return new AuthenticationResponse(jwtService.generateToken(claims,user));
     }
 }
