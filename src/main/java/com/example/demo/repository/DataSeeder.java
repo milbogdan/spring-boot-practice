@@ -17,8 +17,8 @@ public class DataSeeder {
             userRepository.save(user1);
             userRepository.save(user2);
 
-            Listing listing1 = new Listing(null, "Laptop for Sale", "Selling a laptop.", user1);
-            Listing listing2 = new Listing(null, "Bicycle for Sale", "Selling a bicycle.", user2);
+            Listing listing1 = new Listing(null, "Laptop for Sale", "Selling a laptop.", user1,false);
+            Listing listing2 = new Listing(null, "Bicycle for Sale", "Selling a bicycle.", user2,false);
 
             listingRepository.save(listing1);
             listingRepository.save(listing2);

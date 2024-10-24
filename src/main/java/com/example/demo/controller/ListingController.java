@@ -29,4 +29,19 @@ public class ListingController {
         return listingService.createListing(listingDTO.getTitle(),listingDTO.getDescription(),userId);
     }
 
+    @DeleteMapping("/delete/{id}")
+    public void deleteListing(@PathVariable long id) {
+        listingService.deleteListing(id);
+    }
+
+    @PutMapping("/update/{id}")
+    public Listing updateListing(@PathVariable Long id, @RequestBody ListingDTO listing) {
+        Listing updatedListing = listingService.updateListing(id,listing);
+        return updatedListing;
+    }
+
+    @PutMapping("/deactivate/{id}")
+    public void updateListing(@PathVariable Long id) {
+        listingService.deactivateListing(id);
+    }
 }

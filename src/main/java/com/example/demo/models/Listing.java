@@ -11,25 +11,27 @@ public class Listing {
     private Long id;
     private String title;
     private String description;
+    private Boolean isDeactivated = false;
 
-    //@JsonIgnore
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
     private User author;
 
-    /*@JsonProperty("authorId")
+    @JsonProperty("authorId")
     public Long getAuthorId() {
         return author != null ? author.getId() : null;
-    }*/
+    }
 
     public Listing() {
     }
 
-    public Listing(Long id, String title, String description, User author) {
+    public Listing(Long id, String title, String description, User author, Boolean isDeactivated) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.author = author;
+        this.isDeactivated = isDeactivated;
     }
 
     public Long getId() {
@@ -62,5 +64,13 @@ public class Listing {
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public Boolean getDeactivated() {
+        return isDeactivated;
+    }
+
+    public void setDeactivated(Boolean deactivated) {
+        isDeactivated = deactivated;
     }
 }

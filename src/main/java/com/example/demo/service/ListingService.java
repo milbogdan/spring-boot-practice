@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.DTOs.ListingDTO;
 import com.example.demo.exception.ExceptionNotFound;
 import com.example.demo.models.Listing;
 import com.example.demo.models.User;
@@ -44,5 +45,31 @@ public class ListingService {
 
     public Listing save(Listing listing) {
         return listingRepository.save(listing);
+    }
+    public void deleteListing(Long listingId) {
+        if (!listingRepository.existsById(listingId)) {
+            throw new ExceptionNotFound("Listing not found");
+        }
+        listingRepository.deleteById(listingId);
+    }
+    public Listing updateListing (Long listingId, ListingDTO listing){
+        if (!listingRepository.existsById(listingId)) {
+            throw new ExceptionNotFound("Listing not found");
+        }
+        Listing currentListing = listingRepository.findById(listingId).get();
+        if (listing.getTitle() != null) {
+            currentListing.setTitle(listing.getTitle());
+        }
+        if (listing.getDescription() != null) {
+            currentListing.setDescription(listing.getDescription());
+        }
+        return listingRepository.save(currentListing);
+    }
+
+    public void deactivateListing(Long listingId) {
+        if (!listingRepository.existsById(listingId)) {
+            throw new ExceptionNotFound("Listing not found");
+        }
+        listingRepository.deactivateListing(listingId);
     }
 }
