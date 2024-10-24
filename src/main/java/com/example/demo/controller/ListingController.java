@@ -1,10 +1,10 @@
 package com.example.demo.controller;
 
+import com.example.demo.DTOs.ListingDTO;
 import com.example.demo.models.Listing;
 import com.example.demo.service.ListingService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.transaction.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,5 +19,11 @@ public class ListingController {
     @GetMapping("/get")
     public List<Listing> getListings() {
         return listingService.findAll();
+    }
+
+    @PostMapping("/save")
+    public Listing saveListing(@RequestBody ListingDTO listingDTO) {
+        Long userId = 3L; // Should be implemented after JWT is implemented
+        return listingService.createListing(listingDTO.getTitle(),listingDTO.getDescription(),userId);
     }
 }
