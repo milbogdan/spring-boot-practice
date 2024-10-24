@@ -1,18 +1,26 @@
 package com.example.demo.repository;
 
 import com.example.demo.models.Listing;
+import com.example.demo.models.Role;
 import com.example.demo.models.User;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DataSeeder {
+    private final PasswordEncoder passwordEncoder;
+
+    public DataSeeder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
     @Bean
     public CommandLineRunner initDatabase(UserRepository userRepository, ListingRepository listingRepository) {
         return args -> {
-            User user1 = new User(null, "John", "Doe", "john.doe@test.com", "123");
-            User user2 = new User(null, "Nikola", "Jokic", "nikola.jokic@test.com", "123");
+            User user1 = new User(null, "John", "Doe", "john.doe@test.com", passwordEncoder.encode("123"), Role.USER);
+            User user2 = new User(null, "Nikola", "Jokic", "nikola.jokic@test.com", passwordEncoder.encode("123"), Role.ADMIN);
 
             userRepository.save(user1);
             userRepository.save(user2);

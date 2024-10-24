@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.DTOs.ListingDTO;
+import com.example.demo.exception.ExceptionForbidden;
 import com.example.demo.exception.ExceptionNotFound;
 import com.example.demo.models.Listing;
 import com.example.demo.models.User;
@@ -46,17 +47,24 @@ public class ListingService {
     public Listing save(Listing listing) {
         return listingRepository.save(listing);
     }
-    public void deleteListing(Long listingId) {
-        if (!listingRepository.existsById(listingId)) {
-            throw new ExceptionNotFound("Listing not found");
-        }
-        listingRepository.deleteById(listingId);
-    }
-    public Listing updateListing (Long listingId, ListingDTO listing){
+    public void deleteListing(Long userId, Long listingId) {
         if (!listingRepository.existsById(listingId)) {
             throw new ExceptionNotFound("Listing not found");
         }
         Listing currentListing = listingRepository.findById(listingId).get();
+        if(currentListing.getAuthor().getId()!=userId){
+            throw new ExceptionForbidden("This listing does not belong to this user");
+        }
+        listingRepository.deleteById(listingId);
+    }
+    public Listing updateListing (Long userId, Long listingId, ListingDTO listing){
+        if (!listingRepository.existsById(listingId)) {
+            throw new ExceptionNotFound("Listing not found");
+        }
+        Listing currentListing = listingRepository.findById(listingId).get();
+        if(currentListing.getAuthor().getId()!=userId){
+            throw new ExceptionForbidden("This listing does not belong to this user");
+        }
         if (listing.getTitle() != null) {
             currentListing.setTitle(listing.getTitle());
         }
@@ -66,9 +74,13 @@ public class ListingService {
         return listingRepository.save(currentListing);
     }
 
-    public void deactivateListing(Long listingId) {
+    public void deactivateListing(Long userId, Long listingId) {
         if (!listingRepository.existsById(listingId)) {
             throw new ExceptionNotFound("Listing not found");
+        }
+        Listing currentListing = listingRepository.findById(listingId).get();
+        if(currentListing.getAuthor().getId()!=userId){
+            throw new ExceptionForbidden("This listing does not belong to this user");
         }
         listingRepository.deactivateListing(listingId);
     }

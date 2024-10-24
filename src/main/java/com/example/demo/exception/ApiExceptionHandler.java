@@ -29,4 +29,14 @@ public class ApiExceptionHandler {
         );
         return new ResponseEntity<>(apiException, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(value={ExceptionForbidden.class})
+    public ResponseEntity<Object> handleApiRequestBadForbiddenException(ExceptionBadRequest e){
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                HttpStatus.FORBIDDEN,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, HttpStatus.FORBIDDEN);
+    }
 }
