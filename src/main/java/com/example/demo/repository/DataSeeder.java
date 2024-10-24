@@ -19,8 +19,8 @@ public class DataSeeder {
     @Bean
     public CommandLineRunner initDatabase(UserRepository userRepository, ListingRepository listingRepository) {
         return args -> {
-            User user1 = new User(null, "John", "Doe", "john.doe@test.com", passwordEncoder.encode("123"), Role.USER);
-            User user2 = new User(null, "Nikola", "Jokic", "nikola.jokic@test.com", passwordEncoder.encode("123"), Role.ADMIN);
+            User user1 = new User(null, "John", "Doe", "john.doe@test.com", passwordEncoder.encode("123"), Role.ROLE_USER);
+            User user2 = new User(null, "Nikola", "Jokic", "nikola.jokic@test.com", passwordEncoder.encode("123"), Role.ROLE_ADMIN);
 
             userRepository.save(user1);
             userRepository.save(user2);
