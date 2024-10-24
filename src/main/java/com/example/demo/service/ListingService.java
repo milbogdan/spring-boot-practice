@@ -22,6 +22,13 @@ public class ListingService {
     public List<Listing> findAll() {
         return listingRepository.findAll();
     }
+    public List<Listing> findAllForUser(Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new ExceptionNotFound("User not found");
+        }
+        User user = userRepository.findById(userId).get();
+        return listingRepository.findAllByAuthor(user);
+    }
 
     public Listing createListing(String title, String description,Long userId) {
         if (!userRepository.existsById(userId)){

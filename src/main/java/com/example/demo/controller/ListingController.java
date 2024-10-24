@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.DTOs.ListingDTO;
+import com.example.demo.exception.ExceptionBadRequest;
 import com.example.demo.models.Listing;
 import com.example.demo.service.ListingService;
 import jakarta.transaction.Transactional;
@@ -16,14 +17,16 @@ public class ListingController {
         this.listingService = listingService;
     }
 
-    @GetMapping("/get")
-    public List<Listing> getListings() {
-        return listingService.findAll();
+    @GetMapping("/getAll/{userId}")
+    public List<Listing> getListings(@PathVariable long userId) {
+
+        return listingService.findAllForUser(userId);
     }
 
     @PostMapping("/save")
     public Listing saveListing(@RequestBody ListingDTO listingDTO) {
-        Long userId = 3L; // Should be implemented after JWT is implemented
+        Long userId = 1L; // Should be implemented after JWT is implemented
         return listingService.createListing(listingDTO.getTitle(),listingDTO.getDescription(),userId);
     }
+
 }
