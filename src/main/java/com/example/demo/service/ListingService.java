@@ -32,6 +32,14 @@ public class ListingService {
         return listingRepository.findAllByAuthor(user);
     }
 
+    public List<Listing> findAllDeactivatedForUser(Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new ExceptionNotFound("User not found");
+        }
+        User user = userRepository.findById(userId).get();
+        return listingRepository.findAllDeactivatedByAuthor(user);
+    }
+
     public Listing createListing(String title, String description,Long userId) {
         if (!userRepository.existsById(userId)){
             throw new ExceptionNotFound("Userid not found");
@@ -58,13 +66,14 @@ public class ListingService {
         listingRepository.deleteById(listingId);
     }
     public Listing updateListing (Long userId, Long listingId, ListingDTO listing){
-        if (!listingRepository.existsById(listingId)) {
+        if (!listingRepository.existsById(listingId) || listingRepository.isDeactivated(listingId)) {
             throw new ExceptionNotFound("Listing not found");
         }
         Listing currentListing = listingRepository.findById(listingId).get();
         if(currentListing.getAuthor().getId()!=userId){
             throw new ExceptionForbidden("This listing does not belong to this user");
         }
+
         if (listing.getTitle() != null) {
             currentListing.setTitle(listing.getTitle());
         }
@@ -75,13 +84,26 @@ public class ListingService {
     }
 
     public void deactivateListing(Long userId, Long listingId) {
-        if (!listingRepository.existsById(listingId)) {
+        if (!listingRepository.existsById(listingId) || listingRepository.isDeactivated(listingId)) {
             throw new ExceptionNotFound("Listing not found");
         }
         Listing currentListing = listingRepository.findById(listingId).get();
         if(currentListing.getAuthor().getId()!=userId){
             throw new ExceptionForbidden("This listing does not belong to this user");
         }
+
         listingRepository.deactivateListing(listingId);
+    }
+
+    public void activateListing(Long userId, Long listingId) {
+        if (!listingRepository.existsById(listingId) || !listingRepository.isDeactivated(listingId)) {
+            throw new ExceptionNotFound("Listing not found");
+        }
+        Listing currentListing = listingRepository.findById(listingId).get();
+        if(currentListing.getAuthor().getId()!=userId){
+            throw new ExceptionForbidden("This listing does not belong to this user");
+        }
+
+        listingRepository.activateListing(listingId);
     }
 }

@@ -29,6 +29,13 @@ public class ListingController {
         return listingService.findAllForUser(newUser.getId());
     }
 
+    @GetMapping("/getAllDeactivated")
+    public List<Listing> getDeactivatedListings() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User newUser = (User) authentication.getPrincipal();
+        return listingService.findAllDeactivatedForUser(newUser.getId());
+    }
+
     @PostMapping("/save")
     public Listing saveListing(@RequestBody ListingDTO listingDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -52,9 +59,16 @@ public class ListingController {
     }
 
     @PutMapping("/deactivate/{id}")
-    public void updateListing(@PathVariable Long id) {
+    public void deactivateListing(@PathVariable Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User newUser = (User) authentication.getPrincipal();
         listingService.deactivateListing(newUser.getId(),id);
+    }
+
+    @PutMapping("/activate/{id}")
+    public void activateListing(@PathVariable Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User newUser = (User) authentication.getPrincipal();
+        listingService.activateListing(newUser.getId(),id);
     }
 }
