@@ -31,7 +31,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(value={ExceptionForbidden.class})
-    public ResponseEntity<Object> handleApiRequestBadForbiddenException(ExceptionBadRequest e){
+    public ResponseEntity<Object> handleApiRequestForbiddenException(ExceptionForbidden e){
         ApiException apiException = new ApiException(
                 e.getMessage(),
                 HttpStatus.FORBIDDEN,

@@ -20,7 +20,7 @@ public class DataSeeder {
     public CommandLineRunner initDatabase(UserRepository userRepository, ListingRepository listingRepository) {
         return args -> {
             User user1 = new User(null, "John", "Doe", "john.doe@test.com", passwordEncoder.encode("123"), Role.ROLE_USER);
-            User user2 = new User(null, "Nikola", "Jokic", "nikola.jokic@test.com", passwordEncoder.encode("123"), Role.ROLE_ADMIN);
+            User user2 = new User(null, "Nikola", "Jokic", "string", passwordEncoder.encode("string"), Role.ROLE_ADMIN);
 
             userRepository.save(user1);
             userRepository.save(user2);
