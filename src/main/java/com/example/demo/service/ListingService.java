@@ -7,6 +7,8 @@ import com.example.demo.models.Listing;
 import com.example.demo.models.User;
 import com.example.demo.repository.ListingRepository;
 import com.example.demo.repository.UserRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,15 +22,16 @@ public class ListingService {
         this.listingRepository = listingRepository;
         this.userRepository = userRepository;
     }
-
     public List<Listing> findAll() {
         return listingRepository.findAll();
     }
+    @Cacheable(value="listings", key="#userId")
     public List<Listing> findAllForUser(Long userId) {
         if (!userRepository.existsById(userId)) {
             throw new ExceptionNotFound("User not found");
         }
         User user = userRepository.findById(userId).get();
+        System.out.println("Fetching listings...\n");
         return listingRepository.findAllByAuthor(user);
     }
 
@@ -39,7 +42,7 @@ public class ListingService {
         User user = userRepository.findById(userId).get();
         return listingRepository.findAllDeactivatedByAuthor(user);
     }
-
+    @CacheEvict(value = "listings", allEntries = true)
     public Listing createListing(String title, String description,Long userId) {
         if (!userRepository.existsById(userId)){
             throw new ExceptionNotFound("Userid not found");
@@ -55,6 +58,7 @@ public class ListingService {
     public Listing save(Listing listing) {
         return listingRepository.save(listing);
     }
+    @CacheEvict(value = "listings", allEntries = true)
     public void deleteListing(Long userId, Long listingId) {
         if (!listingRepository.existsById(listingId)) {
             throw new ExceptionNotFound("Listing not found");
@@ -65,6 +69,7 @@ public class ListingService {
         }
         listingRepository.deleteById(listingId);
     }
+    @CacheEvict(value = "listings", allEntries = true)
     public Listing updateListing (Long userId, Long listingId, ListingDTO listing){
         if (!listingRepository.existsById(listingId) || listingRepository.isDeactivated(listingId)) {
             throw new ExceptionNotFound("Listing not found");
@@ -82,7 +87,7 @@ public class ListingService {
         }
         return listingRepository.save(currentListing);
     }
-
+    @CacheEvict(value = "listings", allEntries = true)
     public void deactivateListing(Long userId, Long listingId) {
         if (!listingRepository.existsById(listingId) || listingRepository.isDeactivated(listingId)) {
             throw new ExceptionNotFound("Listing not found");
@@ -94,7 +99,7 @@ public class ListingService {
 
         listingRepository.deactivateListing(listingId);
     }
-
+    @CacheEvict(value = "listings", allEntries = true)
     public void activateListing(Long userId, Long listingId) {
         if (!listingRepository.existsById(listingId) || !listingRepository.isDeactivated(listingId)) {
             throw new ExceptionNotFound("Listing not found");
