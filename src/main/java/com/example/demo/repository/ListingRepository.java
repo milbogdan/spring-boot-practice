@@ -22,6 +22,14 @@ public interface ListingRepository extends JpaRepository<Listing, Long> {
     @Query("SELECT l FROM Listing l WHERE l.author=:user AND l.isDeactivated=true")
     public List<Listing> findAllDeactivatedByAuthor(User user);
 
+    @Query("SELECT l FROM Listing l WHERE l.isDeactivated = false")
+    Page<Listing> findAllActive(Pageable pageable);
+
+    @Query("SELECT l FROM Listing l WHERE (l.title LIKE CONCAT('%', :search, '%') OR l.description LIKE CONCAT('%', :search, '%')) AND l.isDeactivated = false")
+    Page<Listing> findAllActiveWithSearch(String search,Pageable pageable);
+
+
+
     @Query ("SELECT l.isDeactivated FROM Listing l WHERE l.id=:id")
     public boolean isDeactivated (Long id);
 

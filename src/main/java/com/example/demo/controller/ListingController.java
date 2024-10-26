@@ -21,16 +21,19 @@ public class ListingController {
     public ListingController(ListingService listingService) {
         this.listingService = listingService;
     }
-
     @GetMapping("/getAll/{page}/{size}")
-    public List<Listing> getListings(@PathVariable int page, @PathVariable int size) {
+    public List<Listing> getListings(@PathVariable int page, @PathVariable int size, @RequestParam(required = false) String search) {
+        return listingService.findAll(search, page, size);
+    }
+    @GetMapping("/getAllByUser/{page}/{size}")
+    public List<Listing> getListingsForUser(@PathVariable int page, @PathVariable int size) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User newUser = (User) authentication.getPrincipal();
         return listingService.findAllForUser(newUser.getId(), page, size);
     }
 
-    @GetMapping("/getAllDeactivated")
-    public List<Listing> getDeactivatedListings() {
+    @GetMapping("/getAllDeactivatedByUser")
+    public List<Listing> getDeactivatedListingsForUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User newUser = (User) authentication.getPrincipal();
         return listingService.findAllDeactivatedForUser(newUser.getId());
