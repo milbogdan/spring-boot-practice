@@ -22,11 +22,11 @@ public class ListingController {
         this.listingService = listingService;
     }
 
-    @GetMapping("/getAll")
-    public List<Listing> getListings() {
+    @GetMapping("/getAll/{page}/{size}")
+    public List<Listing> getListings(@PathVariable int page, @PathVariable int size) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User newUser = (User) authentication.getPrincipal();
-        return listingService.findAllForUser(newUser.getId());
+        return listingService.findAllForUser(newUser.getId(), page, size);
     }
 
     @GetMapping("/getAllDeactivated")

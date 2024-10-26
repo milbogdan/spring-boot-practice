@@ -9,6 +9,9 @@ import com.example.demo.repository.ListingRepository;
 import com.example.demo.repository.UserRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,14 +28,16 @@ public class ListingService {
     public List<Listing> findAll() {
         return listingRepository.findAll();
     }
-    @Cacheable(value="listings", key="#userId")
-    public List<Listing> findAllForUser(Long userId) {
+    @Cacheable(value="listings", key="#userId + '-' + #page + '-' + #size")
+    public List<Listing> findAllForUser(Long userId,int page, int size) {
         if (!userRepository.existsById(userId)) {
             throw new ExceptionNotFound("User not found");
         }
         User user = userRepository.findById(userId).get();
         System.out.println("Fetching listings...\n");
-        return listingRepository.findAllByAuthor(user);
+        Pageable pageable = PageRequest.of(page,size);
+        Page<Listing> listings = listingRepository.findAllByAuthor(user,pageable);
+        return listings.getContent();
     }
 
     public List<Listing> findAllDeactivatedForUser(Long userId) {
