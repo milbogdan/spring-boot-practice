@@ -6,12 +6,15 @@ import com.example.demo.models.Listing;
 import com.example.demo.models.User;
 import com.example.demo.service.ListingService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.annotation.security.PermitAll;
 import jakarta.transaction.Transactional;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("api/v1/listing")
@@ -73,5 +76,14 @@ public class ListingController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User newUser = (User) authentication.getPrincipal();
         listingService.activateListing(newUser.getId(),id);
+    }
+
+    //Endpoint that calls async method, experimenting purposes
+    @GetMapping("/callAsync")
+    public CompletableFuture<String> callAsync() throws InterruptedException {
+        CompletableFuture<String> string = new CompletableFuture<>();
+        string=listingService.asyncFunction();
+        System.out.println("PRINT AFTER THE ASYNC METHOD CALL");
+        return string;
     }
 }

@@ -12,10 +12,12 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class ListingService {
@@ -129,5 +131,13 @@ public class ListingService {
         }
 
         listingRepository.activateListing(listingId);
+    }
+
+
+    //Async method used for experimenting
+    @Async
+    public CompletableFuture<String> asyncFunction() throws InterruptedException {
+        Thread.sleep(5000);
+        return CompletableFuture.completedFuture("Async Function Response");
     }
 }

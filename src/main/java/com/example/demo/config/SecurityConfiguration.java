@@ -34,7 +34,8 @@ public class SecurityConfiguration {
                         "/api/v1/auth/**",
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
-                        "/actuator/**" //permited for testing purposes, in real-life application should be secured
+                        "/actuator/**", //permited for testing purposes, in real-life application should be secured
+                        "/api/v1/listing/callAsync"
                 )
                 .permitAll()
                 .anyRequest()
