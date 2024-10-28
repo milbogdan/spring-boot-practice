@@ -35,7 +35,9 @@ public class SecurityConfiguration {
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
                         "/actuator/**", //permited for testing purposes, in real-life application should be secured
-                        "/api/v1/listing/callAsync"
+                        "/api/v1/listing/callAsync",
+                        "/graphql",
+                        "/graphiql"
                 )
                 .permitAll()
                 .anyRequest()

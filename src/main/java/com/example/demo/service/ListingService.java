@@ -29,6 +29,14 @@ public class ListingService {
         this.userRepository = userRepository;
     }
 
+    public Listing getById(long id) {
+        return listingRepository.getById(id);
+    }
+
+    public List<Listing> findAllNoFilter() {
+        return listingRepository.findAll();
+    }
+
     public List<Listing> findAll(String search, int page, int size) {
         Pageable pageable = PageRequest.of(page,size);
         if(search == null || search.isEmpty()) {
