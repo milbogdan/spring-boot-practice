@@ -3,6 +3,8 @@ package com.example.demo.repository;
 import com.example.demo.models.Listing;
 import com.example.demo.models.User;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,10 +17,18 @@ import java.util.List;
 public interface ListingRepository extends JpaRepository<Listing, Long> {
 
     @Query("SELECT l FROM Listing l WHERE l.author=:user AND l.isDeactivated=false")
-    public List<Listing> findAllByAuthor(User user);
+    public Page<Listing> findAllByAuthor(User user, Pageable pageable);
 
     @Query("SELECT l FROM Listing l WHERE l.author=:user AND l.isDeactivated=true")
     public List<Listing> findAllDeactivatedByAuthor(User user);
+
+    @Query("SELECT l FROM Listing l WHERE l.isDeactivated = false")
+    Page<Listing> findAllActive(Pageable pageable);
+
+    @Query("SELECT l FROM Listing l WHERE (l.title LIKE CONCAT('%', :search, '%') OR l.description LIKE CONCAT('%', :search, '%')) AND l.isDeactivated = false")
+    Page<Listing> findAllActiveWithSearch(String search,Pageable pageable);
+
+
 
     @Query ("SELECT l.isDeactivated FROM Listing l WHERE l.id=:id")
     public boolean isDeactivated (Long id);

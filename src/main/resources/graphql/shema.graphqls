@@ -1,0 +1,23 @@
+type Query{
+    users: [User]
+    userById (id:ID): User
+    listings: [Listing]
+    listingById (id:ID): Listing
+}
+
+type User{
+    id:ID
+    firstName: String
+    lastName: String
+    email: String
+    password: String
+    role: String
+}
+
+type Listing{
+    id:ID
+    title: String
+    description: String
+    isDeactivated: Boolean
+    author: User
+}

@@ -27,9 +27,35 @@ public class DataSeeder {
 
             Listing listing1 = new Listing(null, "Laptop for Sale", "Selling a laptop.", user1,false);
             Listing listing2 = new Listing(null, "Bicycle for Sale", "Selling a bicycle.", user2,false);
+            Listing listing3 = new Listing(null, "Bicycle for Sale", "Selling a bicycle.", user2,false);
+            Listing listing4 = new Listing(null, "Bicycle for Sale", "Selling a bicycle.", user2,false);
+            Listing listing5 = new Listing(null, "Bicycle for Sale", "Selling a bicycle.", user2,false);
+            Listing listing6 = new Listing(null, "Bicycle for Sale", "Selling a bicycle.", user2,false);
+            Listing listing7 = new Listing(null, "Bicycle for Sale", "Selling a bicycle.", user2,false);
+            Listing listing8 = new Listing(null, "Bicycle for Sale", "Selling a bicycle.", user2,false);
+            Listing listing9 = new Listing(null, "Bicycle for Sale", "Selling a bicycle.", user2,false);
+            Listing listing10 = new Listing(null, "Bicycle for Sale", "Selling a bicycle.", user2,false);
+            Listing listing11 = new Listing(null, "Bicycle for Sale", "Selling a bicycle.", user2,false);
+            Listing listing12 = new Listing(null, "Bicycle for Sale", "Selling a bicycle.", user2,false);
+            Listing listing13 = new Listing(null, "Bicycle for Sale", "Selling a bicycle.", user2,false);
+            Listing listing14 = new Listing(null, "Bicycle for Sale", "Selling a bicycle.", user2,false);
+            Listing listing15 = new Listing(null, "Bicycle for Sale", "Selling a bicycle.", user2,false);
 
             listingRepository.save(listing1);
             listingRepository.save(listing2);
+            listingRepository.save(listing3);
+            listingRepository.save(listing4);
+            listingRepository.save(listing5);
+            listingRepository.save(listing6);
+            listingRepository.save(listing7);
+            listingRepository.save(listing8);
+            listingRepository.save(listing9);
+            listingRepository.save(listing10);
+            listingRepository.save(listing11);
+            listingRepository.save(listing12);
+            listingRepository.save(listing13);
+            listingRepository.save(listing14);
+            listingRepository.save(listing15);
         };
     }
 }

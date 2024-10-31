@@ -26,8 +26,6 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-
         http
                 .csrf()
                 .disable()
@@ -35,7 +33,11 @@ public class SecurityConfiguration {
                 .requestMatchers(
                         "/api/v1/auth/**",
                         "/swagger-ui/**",
-                        "/v3/api-docs/**"
+                        "/v3/api-docs/**",
+                        "/actuator/**", //permited for testing purposes, in real-life application should be secured
+                        "/api/v1/listing/callAsync",
+                        "/graphql",
+                        "/graphiql"
                 )
                 .permitAll()
                 .anyRequest()
